@@ -1,0 +1,70 @@
+<main class="page">
+  <section class="card">
+    <header class="card-header">
+      <h1>Lista de tareas (MVVM)</h1>
+      <p class="subtitle">
+        Taller universitario: patrón arquitectónico <strong>MVVM</strong> en Angular.
+      </p>
+    </header>
+
+    <section class="new-task">
+      <label class="new-task-label" for="task-input">
+        Nueva tarea
+      </label>
+
+      <div class="new-task-controls">
+        <input
+          id="task-input"
+          type="text"
+          placeholder="Escribe una descripción de la tarea..."
+          [(ngModel)]="newTaskDescription"
+        />
+        <button type="button" (click)="addTask()">
+          Agregar
+        </button>
+      </div>
+      <p class="helper-text">
+        No se permiten tareas vacías ni solo con espacios.
+      </p>
+    </section>
+
+    <section class="counters">
+      <span>Total: <strong>{{ totalTasks }}</strong></span>
+      <span>Completadas: <strong>{{ completedTasks }}</strong></span>
+      <span>Pendientes: <strong>{{ pendingTasks }}</strong></span>
+    </section>
+
+    <section class="task-list">
+      <p *ngIf="tasks.length === 0" class="empty-state">
+        Aún no hay tareas. Agrega la primera para comenzar.
+      </p>
+
+      <ul *ngIf="tasks.length > 0">
+        <li
+          *ngFor="let task of tasks; trackBy: trackByTaskId"
+          [class.task-completed]="task.completed"
+        >
+          <div class="task-main">
+            <span class="task-status" [attr.aria-label]="task.completed ? 'Completada' : 'Pendiente'">
+              {{ task.completed ? '✓' : '○' }}
+            </span>
+
+            <span class="task-description">
+              {{ task.description }}
+            </span>
+          </div>
+
+          <div class="task-actions">
+            <button type="button" class="btn-secondary" (click)="toggleCompleted(task.id)">
+              {{ task.completed ? 'Desmarcar' : 'Completar' }}
+            </button>
+            <button type="button" class="btn-danger" (click)="deleteTask(task.id)">
+              Eliminar
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </section>
+</main>
+
